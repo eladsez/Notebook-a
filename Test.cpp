@@ -47,6 +47,8 @@ TEST_CASE("Bad input to Notebook functions") {
     CHECK_THROWS(nb.read(0, -1, 0, Direction::Horizontal, 1));
     CHECK_THROWS(nb.read(0, 0, -1, Direction::Horizontal, 1));
     CHECK_THROWS(nb.read(0, 0, 0, Direction::Horizontal, -1));
+    CHECK_THROWS(nb.erase(0, 0, 0, Direction::Horizontal, -1));
+    CHECK_THROWS(nb.erase(-1, 0, 0, Direction::Horizontal, 1));
 
     nb.write(0, 0, 0, Direction::Horizontal, "write on erase test");
     nb.erase(0, 0, 0, Direction::Horizontal, 20);
@@ -59,6 +61,9 @@ TEST_CASE("Bad input to Notebook functions") {
     // check if possible to write more then 100 chars to column
     CHECK_NOTHROW(nb.write(2, 0, 0, Direction::Vertical, "....................................................................................................................."));
 
-    
-
+    // check for invalid input for column over 100 and length of row over 100
+    CHECK_THROWS(nb.read(0, 0, 120, Direction::Horizontal, 10));
+    CHECK_THROWS(nb.erase(0, 0, 120, Direction::Horizontal, 10));
+    CHECK_THROWS(nb.erase(0, 0, 0, Direction::Horizontal, 150));
+    CHECK_THROWS(nb.read(0, 0, 0, Direction::Horizontal, 150));
 }
